@@ -6,9 +6,22 @@ type HeatMapProps = {
 };
 
 function Heatmap(props: HeatMapProps) {
-  const squares: string[] = Array(365).fill("");
+  //need to get the current year then fill the array with dates from January 1st of current year to the current date
+  // const squares: string[] = Array(365).fill("");
+  const datesArray: Date[] = [];
 
-  const getChunks = (arr: string[]) => {
+  const generateSquaresArray = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const startDate = new Date(year, 0, 1);
+    const endDate = today;
+
+    for(let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
+      datesArray.push(new Date(date));
+    }
+  }
+
+  const getChunks = (arr: Date[]) => {
     let chunks = [];
     for (let i = 0; i < arr.length; i += 7) {
       chunks.push(arr.slice(i, i + 7));
@@ -16,7 +29,8 @@ function Heatmap(props: HeatMapProps) {
     return chunks;
   };
 
-  let columns = getChunks(squares);
+  generateSquaresArray();
+  let columns = getChunks(datesArray);
 
   return (
     <div className="flex flex-col">
