@@ -14,7 +14,7 @@ function App() {
   return (
     <>
       <NewHabit addNewHabit = {addNewHabit}/>
-      {habits.map(() => <Heatmap/>)}
+      {habits.map((name: String) => <Heatmap name ={name}/>)}
     </>
   );
 }

@@ -16,7 +16,7 @@ function NewHabit(props: NewHabitProps) {
   return (
     <div>
         <input type="text" placeholder='Go to gym, stop smoking, wake up early, etc' value={habitName} onChange={(e) => sethabitName(e.target.value)}/>
-        <button onClick={newHabitHandler}>+</button>
+        <button onClick={newHabitHandler} className="text-4xl text-white ml-4">+</button>
     </div>
   )
 }
