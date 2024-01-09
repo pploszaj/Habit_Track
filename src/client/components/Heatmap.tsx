@@ -37,7 +37,7 @@ function Heatmap(props: HeatMapProps) {
 
   return (
     <div className="flex flex-col">
-      <h2 className="text-white">{props.name}</h2>
+      <h2 className="text-white text-2xl text font-bold mb-3">{props.name.toUpperCase()}</h2>
       <div className="flex gap-1">
         {columns.map((column, index) => {
           return (
