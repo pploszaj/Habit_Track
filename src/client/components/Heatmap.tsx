@@ -39,8 +39,8 @@ function Heatmap(props: HeatMapProps) {
         {columns.map((column, index) => {
           return (
             <div className="flex flex-col gap-1" key={index}>
-              {column.map((_, index) => {
-                return <Square key={index} />;
+              {column.map((date, index) => {
+                return <Square date={date} key={index} />;
               })}
             </div>
           );

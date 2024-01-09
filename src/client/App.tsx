@@ -13,10 +13,12 @@ function App() {
   return (
     <>
       <NewHabit addNewHabit={addNewHabit} />
-      <div className="h-screen w-screen flex flex-col justify-start items-center gap-10 mt-10">
-        {habits.map((name: String) => (
-          <Heatmap name={name} />
-        ))}
+      <div className="flex justify-center w-screen h-screen">
+        <div className="h-screen w-[70vw] flex flex-col justify-start items-start gap-10 mt-10">
+          {habits.map((name: String, index: any) => (
+            <Heatmap name={name} key={index}/>
+          ))}
+        </div>
       </div>
     </>
   );
