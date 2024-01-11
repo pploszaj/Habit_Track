@@ -1,12 +1,11 @@
 import React, {useState} from 'react'
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
+import { SquareObject } from '../types'
 
-type SquareProps = {
-  date: Date;
-}
 
-function Square(props: SquareProps) {
+
+function Square(props: SquareObject) {
 
   const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} arrow placement="top" classes={{ popper: className }} />
@@ -22,13 +21,11 @@ function Square(props: SquareProps) {
   }));
   
 
-  const [completed, setcompleted] = useState(false);
-
-  const clickHandler = () => {
-    if(props.date <= new Date()){
-      setcompleted(!completed);
-    }
-  }
+  // const clickHandler = () => {
+  //   if(props.date <= new Date()){
+  //     setcompleted(!completed);
+  //   }
+  // }
 
   return (
     <BootstrapTooltip title={props.date.toLocaleDateString(undefined, {
@@ -36,7 +33,7 @@ function Square(props: SquareProps) {
       day: 'numeric',
       year: 'numeric'
     })}>
-      <div className='h-4 w-4 rounded' style={{border: props.date.toDateString() === new Date().toDateString() ? '#39D353 2px solid' : '', backgroundColor: completed ? '#39D353' : '#161B22', cursor: props.date <= new Date() ? 'pointer' : 'default'}} onClick={clickHandler}></div>
+      <div className='h-4 w-4 rounded' style={{border: props.date.toDateString() === new Date().toDateString() ? '#39D353 2px solid' : '', backgroundColor: props.completed ? '#39D353' : '#161B22', cursor: props.date <= new Date() ? 'pointer' : 'default'}} ></div>
     </BootstrapTooltip>
   )
 }

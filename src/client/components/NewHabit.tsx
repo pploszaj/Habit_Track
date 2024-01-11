@@ -8,7 +8,7 @@ type NewHabitProps = {
 function NewHabit(props: NewHabitProps) {
 
     const [habitName, sethabitName] = useState('');
-    const [habitType, sethabitType] = useState<HabitType>();
+    const [habitType, sethabitType] = useState<HabitType>(HabitType.NUMBER);
 
     const newHabitHandler = () => {
       if(habitName !== '' && habitType !== undefined){
