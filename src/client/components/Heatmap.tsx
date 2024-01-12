@@ -7,12 +7,12 @@ type HeatMapProps = {
 };
 
 function Heatmap(props: HeatMapProps) {
-  const [heatmap, setheatmap] = useState<SquareObject[]>([]);
-  const [columns, setcolumns] = useState<SquareObject[][]>([]);
+  //const [heatmap, setheatmap] = useState<SquareObject[]>([]);
+  const [heatmap, setheatmap] = useState<SquareObject[][]>([]);
 
   //gets the array of squares (amount of squares)
   //to see only as many squares up to the current day change endDate to the value of today
-  const generateSquaresArray = () => {
+  const generateSquaresArray = async () => {
     const datesArray: SquareObject[] = [];
     let i = 0;
     const today = new Date();
@@ -28,39 +28,42 @@ function Heatmap(props: HeatMapProps) {
       datesArray.push({ id: i++, date: new Date(date), completed: false });
     }
 
-    setheatmap(datesArray);
+    let chunks = [];
+    for (let i = 0; i < datesArray.length; i += 7) {
+      chunks.push(datesArray.slice(i, i + 7));
+    }
+    setheatmap(chunks);
   };
 
-  //gets the columns
-  const getChunks = (arr: SquareObject[]) => {
-    let chunks = [];
-    for (let i = 0; i < arr.length; i += 7) {
-      chunks.push(arr.slice(i, i + 7));
-    }
-    return chunks;
-  };
 
   useEffect(() => {
     generateSquaresArray();
   }, []);
 
-  useEffect(() => {
-    let columns = getChunks(heatmap);
-    setcolumns(columns);
-  }, [heatmap])
 
-
+  const toggleCompleteHandler = (id: Number) => {
+    const updatedHeatmap = heatmap.map((square) => {
+    return square.map((obj) => 
+      obj.id === id
+        ? { ...obj, completed: !obj.completed }
+        : obj
+    )
+  });
+    setheatmap(updatedHeatmap);
+    console.log('done');
+  };
+  
   return (
     <div className="flex flex-col">
       <h2 className="text-white text-2xl text font-bold mb-3">
         {props.name.toUpperCase()}
       </h2>
       <div className="flex gap-1">
-        {columns.length > 0 ? (columns.map((column, index) => {
+        {heatmap.length > 0 ? (heatmap.map((column, index) => {
           return (
             <div className="flex flex-col gap-1" key={index}>
-              {column.map((square, index) => {
-                return <Square id={square.id} date={square.date} completed={square.completed} key={index}/>;
+              {column.map((square) => {
+                return <Square id={square.id} date={square.date} completed={square.completed} key={square.id} toggleComplete={toggleCompleteHandler}/>;
               })}
             </div>
           );
