@@ -9,6 +9,7 @@ type HeatMapProps = {
 function Heatmap(props: HeatMapProps) {
   //const [heatmap, setheatmap] = useState<SquareObject[]>([]);
   const [heatmap, setheatmap] = useState<SquareObject[][]>([]);
+  const [streak, setstreak] = useState<number>(0);
 
   //gets the array of squares (amount of squares)
   //to see only as many squares up to the current day change endDate to the value of today
@@ -52,7 +53,31 @@ function Heatmap(props: HeatMapProps) {
     setheatmap(updatedHeatmap);
     console.log('done');
   };
-  
+
+  const calculateStreak = () => {
+    let maximumStreak = 0;
+    let current = 0;
+
+    for(let i = 0; i < heatmap.length; i++) {
+      for(let j = 0; j < heatmap[i].length; j++) {
+        if(heatmap[i][j].completed){
+          current += 1;
+          if(current > maximumStreak){
+            maximumStreak = current;
+          }
+        } else {
+          current = 0;
+        }
+      }
+    }
+
+    return maximumStreak;
+  }
+ 
+  useEffect(() => {
+    setstreak(calculateStreak());
+  }, [heatmap])
+
   return (
     <div className="flex flex-col">
       <h2 className="text-white text-2xl text font-bold mb-3">
@@ -72,6 +97,9 @@ function Heatmap(props: HeatMapProps) {
             Loading...
           </p>
         )}
+      </div>
+      <div className="mt-1">
+        <h3 className="text-sm font-medium text-lightgray">Streak: {streak} {streak === 1 ? 'day' : 'days'}</h3>
       </div>
     </div>
   );
