@@ -1,13 +1,17 @@
 import React, {useState} from 'react'
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
+import { SquareObject } from '../types'
 
 type SquareProps = {
+  id: number;
   date: Date;
-}
+  completed: boolean;
+  toggleComplete: (id: Number) => void;
+};
 
 function Square(props: SquareProps) {
-
+  console.log('rendered square');
   const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} arrow placement="top" classes={{ popper: className }} />
   ))(({ theme }) => ({
@@ -22,12 +26,8 @@ function Square(props: SquareProps) {
   }));
   
 
-  const [completed, setcompleted] = useState(false);
-
   const clickHandler = () => {
-    if(props.date <= new Date()){
-      setcompleted(!completed);
-    }
+    props.toggleComplete(props.id);
   }
 
   return (
@@ -36,7 +36,7 @@ function Square(props: SquareProps) {
       day: 'numeric',
       year: 'numeric'
     })}>
-      <div className='h-4 w-4 rounded' style={{border: props.date.toDateString() === new Date().toDateString() ? '#39D353 2px solid' : '', backgroundColor: completed ? '#39D353' : '#161B22', cursor: props.date <= new Date() ? 'pointer' : 'default'}} onClick={clickHandler}></div>
+      <div className='h-4 w-4 rounded' style={{border: props.date.toDateString() === new Date().toDateString() ? '#39D353 2px solid' : '', backgroundColor: props.completed ? '#39D353' : '#161B22', cursor: props.date <= new Date() ? 'pointer' : 'default'}} onClick={clickHandler}></div>
     </BootstrapTooltip>
   )
 }
