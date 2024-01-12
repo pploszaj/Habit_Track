@@ -6,10 +6,13 @@ type HeatMapProps = {
   name: String;
 };
 
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
 function Heatmap(props: HeatMapProps) {
   //const [heatmap, setheatmap] = useState<SquareObject[]>([]);
   const [heatmap, setheatmap] = useState<SquareObject[][]>([]);
   const [streak, setstreak] = useState<number>(0);
+
 
   //gets the array of squares (amount of squares)
   //to see only as many squares up to the current day change endDate to the value of today
@@ -83,6 +86,9 @@ function Heatmap(props: HeatMapProps) {
       <h2 className="text-white text-2xl text font-bold mb-3">
         {props.name.toUpperCase()}
       </h2>
+      <div className="flex gap-3.75rem">
+        {months.map((month) => <p className="text-lightgray">{month}</p>)}
+      </div>
       <div className="flex gap-1">
         {heatmap.length > 0 ? (heatmap.map((column, index) => {
           return (
