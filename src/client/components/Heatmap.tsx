@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { SquareObject } from "../types";
 import Square from "./Square";
+import {Habit} from '../types'
 
-type HeatMapProps = {
-  name: String;
-};
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-function Heatmap(props: HeatMapProps) {
+function Heatmap(props: Habit) {
   //const [heatmap, setheatmap] = useState<SquareObject[]>([]);
   const [heatmap, setheatmap] = useState<SquareObject[][]>([]);
   const [streak, setstreak] = useState<number>(0);
@@ -94,7 +92,7 @@ function Heatmap(props: HeatMapProps) {
           return (
             <div className="flex flex-col gap-1" key={index}>
               {column.map((square) => {
-                return <Square id={square.id} date={square.date} completed={square.completed} key={square.id} toggleComplete={toggleCompleteHandler}/>;
+                return <Square id={square.id} date={square.date} completed={square.completed} key={square.id} toggleComplete={toggleCompleteHandler} type={props.type}/>;
               })}
             </div>
           );
