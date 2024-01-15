@@ -1,14 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { SquareObject } from "../types";
 import Square from "./Square";
+import { Habit } from "../types";
 
-type HeatMapProps = {
-  name: String;
-};
+const months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
-function Heatmap(props: HeatMapProps) {
+function Heatmap(props: Habit) {
   //const [heatmap, setheatmap] = useState<SquareObject[]>([]);
-  const [heatmap, setheatmap] = useState<SquareObject[][]>([]);
+  const [heatmap, setheatmap] = useState<SquareObject[]>([]);
+  const [streak, setstreak] = useState<number>(0);
 
   //gets the array of squares (amount of squares)
   //to see only as many squares up to the current day change endDate to the value of today
@@ -28,50 +41,79 @@ function Heatmap(props: HeatMapProps) {
       datesArray.push({ id: i++, date: new Date(date), completed: false });
     }
 
-    let chunks = [];
-    for (let i = 0; i < datesArray.length; i += 7) {
-      chunks.push(datesArray.slice(i, i + 7));
-    }
-    setheatmap(chunks);
+    setheatmap(datesArray);
   };
-
 
   useEffect(() => {
     generateSquaresArray();
   }, []);
 
-
   const toggleCompleteHandler = (id: Number) => {
-    const updatedHeatmap = heatmap.map((square) => {
-    return square.map((obj) => 
-      obj.id === id
-        ? { ...obj, completed: !obj.completed }
-        : obj
-    )
-  });
-    setheatmap(updatedHeatmap);
-    console.log('done');
+    const foundIndex = heatmap.findIndex((square) => square.id === id);
+
+    if (foundIndex !== -1) {
+      const updatedHeatmap = [...heatmap];
+      updatedHeatmap[foundIndex] = {
+        ...updatedHeatmap[foundIndex],
+        completed: !updatedHeatmap[foundIndex].completed,
+      };
+      setheatmap(updatedHeatmap);
+    }
   };
-  
+
+  const calculateStreak = () => {
+    let maximumStreak = 0;
+    let current = 0;
+
+    for(let i = 0; i < heatmap.length; i++) {
+        if(heatmap[i].completed){
+          current += 1;
+          if(current > maximumStreak){
+            maximumStreak = current;
+          }
+        } else {
+          current = 0;
+        }
+    }
+    return maximumStreak;
+  }
+
+  useEffect(() => {
+    setstreak(calculateStreak());
+  }, [heatmap])
+
   return (
     <div className="flex flex-col">
       <h2 className="text-white text-2xl text font-bold mb-3">
         {props.name.toUpperCase()}
       </h2>
-      <div className="flex gap-1">
-        {heatmap.length > 0 ? (heatmap.map((column, index) => {
-          return (
-            <div className="flex flex-col gap-1" key={index}>
-              {column.map((square) => {
-                return <Square id={square.id} date={square.date} completed={square.completed} key={square.id} toggleComplete={toggleCompleteHandler}/>;
-              })}
-            </div>
-          );
-        })) : (
-          <p className="text-white">
-            Loading...
-          </p>
+      <div className="flex gap-3.75rem">
+        {months.map((month, index) => (
+          <p className="text-lightgray" key={index}>{month}</p>
+        ))}
+      </div>
+      <div className="inline-flex flex-col flex-wrap h-[140px]">
+        {heatmap.length > 0 ? (
+          heatmap.map((square, index) => {
+            return (
+              <Square
+                id={square.id}
+                date={square.date}
+                completed={square.completed}
+                key={square.id}
+                toggleComplete={toggleCompleteHandler}
+                type={props.type}
+              />
+            );
+          })
+        ) : (
+          <p className="text-white">Loading...</p>
         )}
+      </div>
+      <div className="mt-1">
+        <h3 className="text-sm font-medium text-lightgray">
+          Streak: {streak} {streak === 1 ? "day" : "days"}
+        </h3>
       </div>
     </div>
   );
