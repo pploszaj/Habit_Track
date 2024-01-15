@@ -18,6 +18,7 @@ type SquareProps = {
 //lightest green: #39D353
 
 function Square(props: SquareProps) {
+  console.log('square')
   const [modal, setmodal] = useState<boolean>(false);
 
   const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
@@ -53,7 +54,7 @@ function Square(props: SquareProps) {
         })}
       >
         <div
-          className="h-4 w-4 rounded"
+          className="h-4 w-4 rounded m-[2px]"
           style={{
             border:
               props.date.toDateString() === new Date().toDateString()
