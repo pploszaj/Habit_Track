@@ -11,9 +11,8 @@
 html,
 body,
 #root {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
   height: 100vh;
   background: #0D1117;
+  position: relative;
 }

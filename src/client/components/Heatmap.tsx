@@ -22,6 +22,7 @@ function Heatmap(props: Habit) {
   //const [heatmap, setheatmap] = useState<SquareObject[]>([]);
   const [heatmap, setheatmap] = useState<SquareObject[]>([]);
   const [streak, setstreak] = useState<number>(0);
+  const [maxVal, setmaxVal] = useState<number>(0);
 
   //gets the array of squares (amount of squares)
   //to see only as many squares up to the current day change endDate to the value of today
@@ -38,7 +39,12 @@ function Heatmap(props: Habit) {
       date <= endDate;
       date.setDate(date.getDate() + 1)
     ) {
-      datesArray.push({ id: i++, date: new Date(date), completed: false });
+      datesArray.push({
+        id: i++,
+        date: new Date(date),
+        completed: false,
+        val: 0,
+      });
     }
 
     setheatmap(datesArray);
@@ -48,7 +54,8 @@ function Heatmap(props: Habit) {
     generateSquaresArray();
   }, []);
 
-  const toggleCompleteHandler = (id: Number) => {
+
+  const toggleCompleteHandler = (id: number) => {
     const foundIndex = heatmap.findIndex((square) => square.id === id);
 
     if (foundIndex !== -1) {
@@ -61,26 +68,45 @@ function Heatmap(props: Habit) {
     }
   };
 
-  const calculateStreak = () => {
+  const updateValue = (id: number, updatedValue: number) => {
+    const foundIndex = heatmap.findIndex((square) => square.id === id);
+
+    if (foundIndex !== -1) {
+      const updatedHeatmap = [...heatmap];
+      updatedHeatmap[foundIndex] = {
+        ...updatedHeatmap[foundIndex],
+        val: updatedValue,
+      };
+      setheatmap(updatedHeatmap);
+    }
+  };
+
+  const calculateStreakAndMaxVal = () => {
     let maximumStreak = 0;
     let current = 0;
+    let maxVal = 0;
 
-    for(let i = 0; i < heatmap.length; i++) {
-        if(heatmap[i].completed){
-          current += 1;
-          if(current > maximumStreak){
-            maximumStreak = current;
-          }
-        } else {
-          current = 0;
+    for (let i = 0; i < heatmap.length; i++) {
+      if(heatmap[i].val > maxVal){
+        maxVal = heatmap[i].val;
+      }
+      if (heatmap[i].completed) {
+        current += 1;
+        if (current > maximumStreak) {
+          maximumStreak = current;
         }
+      } else {
+        current = 0;
+      }
     }
-    return maximumStreak;
-  }
+    return [maximumStreak, maxVal];
+  };
 
   useEffect(() => {
-    setstreak(calculateStreak());
-  }, [heatmap])
+    const [s, v] = calculateStreakAndMaxVal();
+    setstreak(s);
+    setmaxVal(v);
+  }, [heatmap]);
 
   return (
     <div className="flex flex-col">
@@ -89,7 +115,9 @@ function Heatmap(props: Habit) {
       </h2>
       <div className="flex gap-3.75rem">
         {months.map((month, index) => (
-          <p className="text-lightgray" key={index}>{month}</p>
+          <p className="text-lightgray" key={index}>
+            {month}
+          </p>
         ))}
       </div>
       <div className="inline-flex flex-col flex-wrap h-[140px]">
@@ -101,8 +129,11 @@ function Heatmap(props: Habit) {
                 date={square.date}
                 completed={square.completed}
                 key={square.id}
+                val={square.val}
                 toggleComplete={toggleCompleteHandler}
+                updateValue={updateValue}
                 type={props.type}
+                maxVal={maxVal}
               />
             );
           })

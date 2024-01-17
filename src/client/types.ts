@@ -2,6 +2,7 @@
     id: number
     date: Date,
     completed: boolean
+    val: number
   }
 
   type Habit = {

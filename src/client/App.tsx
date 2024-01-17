@@ -12,7 +12,7 @@ function App() {
   };
 
   return (
-    <>
+    <div>
       <NewHabit addNewHabit={addNewHabit} />
       <div className="flex justify-center w-screen h-screen">
         <div className="h-screen w-[70vw] flex flex-col justify-start items-start gap-10 mt-10">
@@ -21,7 +21,7 @@ function App() {
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
