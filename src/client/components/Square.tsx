@@ -60,13 +60,15 @@ function Square(props: SquareProps) {
       let w = max / 4;
       if(val >= max - w){
         setcolor('#39D353');
-      } else if (val >= max - (w * 2)){
+      } else if (val >= max - (w * 2)){ 
         setcolor('#26A641');
       } else if (val >= max - (w * 3)){
         setcolor('#006D32');
-      } else {
+      } else if (val >= max - (w * 4)){
         setcolor('#0D4429');
       }
+    } else {
+      setcolor('#161B22');
     }
   }, [props.val, props.maxVal])
 
