@@ -71,11 +71,12 @@ function Heatmap(props: Habit) {
   const updateValue = (id: number, updatedValue: number) => {
     const foundIndex = heatmap.findIndex((square) => square.id === id);
 
-    if (foundIndex !== -1) {
+    if (foundIndex !== -1 && updatedValue !== 0) {
       const updatedHeatmap = [...heatmap];
       updatedHeatmap[foundIndex] = {
         ...updatedHeatmap[foundIndex],
         val: updatedValue,
+        completed: !updatedHeatmap[foundIndex].completed
       };
       setheatmap(updatedHeatmap);
     }
