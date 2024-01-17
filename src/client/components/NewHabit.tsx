@@ -19,13 +19,15 @@ function NewHabit(props: NewHabitProps) {
 
 
   return (
-    <div className='flex mt-10'>
-        <select value={habitType} onChange={(e) => sethabitType(e.target.value as HabitType)}>
+    <div className='flex mt-10 ml-10 items-center'>
+        <select className='bg-gray rounded text-[#9CA3AF] h-10 pl-1 ' value={habitType} onChange={(e) => sethabitType(e.target.value as HabitType)}>
           <option value={HabitType.NUMBER}>Number</option>
           <option value={HabitType.CHECKBOX}>Checkbox</option>
         </select>
-        <input className='rounded ml-10 w-64 text-sm pl-2 pr-2 bg-gray text-white' type="text" placeholder='Go to gym, stop smoking, etc' value={habitName} onChange={(e) => sethabitName(e.target.value)}/>
-        <button onClick={newHabitHandler} className="text-2xl text-white ml-4">+</button>
+        <input className='h-10 rounded ml-10 w-64 text-sm pl-2 pr-2 bg-gray text-white' type="text" placeholder='Go to gym, stop smoking, etc' value={habitName} onChange={(e) => sethabitName(e.target.value)}/>
+        <button onClick={newHabitHandler} className="flex justify-center items-center text-[#9CA3AF] ml-4 border border-transparent h-10 w-14 rounded hover:text-gray-500 hover:bg-gray transition-all duration-100">
+          <p>Add</p>
+        </button>
     </div>
   )
 }

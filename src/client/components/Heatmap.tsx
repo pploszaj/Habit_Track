@@ -143,9 +143,12 @@ function Heatmap(props: Habit) {
           <p className="text-white">Loading...</p>
         )}
       </div>
-      <div className="mt-1">
-        <h3 className="text-sm font-medium text-lightgray">
+      <div className="mt-1 text-sm font-medium text-lightgray flex justify-between">
+        <h3>
           Streak: {streak} {streak === 1 ? "day" : "days"}
+        </h3>
+        <h3 className="cursor-pointer">
+          Settings
         </h3>
       </div>
     </div>
