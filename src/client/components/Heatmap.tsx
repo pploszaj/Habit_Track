@@ -20,7 +20,7 @@ const months = [
 ];
 
 function Heatmap(props: Habit) {
-  //const [heatmap, setheatmap] = useState<SquareObject[]>([]);
+  
   const [heatmap, setheatmap] = useState<SquareObject[]>([]);
   const [streak, setstreak] = useState<number>(0);
   const [maxVal, setmaxVal] = useState<number>(0);
