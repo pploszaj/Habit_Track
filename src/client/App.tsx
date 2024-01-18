@@ -17,7 +17,7 @@ function App() {
       <div className="flex justify-center w-screen h-screen">
         <div className="h-screen w-[70vw] flex flex-col justify-start items-start gap-10 mt-10">
           {habits.map((habit: Habit, index: number) => (
-            <Heatmap name={habit.name} type={habit.type} key={index}/>
+            <Heatmap name={habit.name} type={habit.type} metric={habit.metric} key={index}/>
           ))}
         </div>
       </div>

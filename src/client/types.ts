@@ -7,7 +7,8 @@
 
   type Habit = {
     name: string,
-    type: HabitType
+    type: HabitType,
+    metric: string
   }
 
   export enum HabitType {

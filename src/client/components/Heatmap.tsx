@@ -20,12 +20,14 @@ const months = [
 ];
 
 function Heatmap(props: Habit) {
-  
   const [heatmap, setheatmap] = useState<SquareObject[]>([]);
   const [streak, setstreak] = useState<number>(0);
   const [maxVal, setmaxVal] = useState<number>(0);
   const [color, setcolor] = useState<string>("#39D353");
   const [settingsModal, setsettingsModal] = useState<boolean>(false);
+  const [avg, setavg] = useState<number>(0);
+
+  console.log('avg', avg)
 
   //gets the array of squares (amount of squares)
   //to see only as many squares up to the current day change endDate to the value of today
@@ -89,10 +91,17 @@ function Heatmap(props: Habit) {
     let maximumStreak = 0;
     let current = 0;
     let maxVal = 0;
+    let sum = 0;
+    let counter = 0;
+    
 
     for (let i = 0; i < heatmap.length; i++) {
       if (heatmap[i].val > maxVal) {
         maxVal = heatmap[i].val;
+      }
+      if (heatmap[i].val > 0) {
+        sum += heatmap[i].val;
+        counter += 1;
       }
       if (heatmap[i].completed) {
         current += 1;
@@ -103,7 +112,10 @@ function Heatmap(props: Habit) {
         current = 0;
       }
     }
-    return [maximumStreak, maxVal];
+
+    let avg = counter > 0 ? sum / counter : 0;
+
+    return [maximumStreak, maxVal, avg];
   };
 
   const toggleModal = () => {
@@ -112,12 +124,13 @@ function Heatmap(props: Habit) {
 
   const changeColorHandler = (color: string) => {
     setcolor(color);
-  }
+  };
 
   useEffect(() => {
-    const [s, v] = calculateStreakAndMaxVal();
+    const [s, v, a] = calculateStreakAndMaxVal();
     setstreak(s);
     setmaxVal(v);
+    setavg(Number((Math.round(a * 100) / 100).toFixed(2)));
   }, [heatmap]);
 
   return (
@@ -156,16 +169,24 @@ function Heatmap(props: Habit) {
           )}
         </div>
         <div className="mt-1 text-sm font-medium text-lightgray flex justify-between">
-          <h3>
-            Streak: {streak} {streak === 1 ? "day" : "days"}
-          </h3>
+          <div className="flex flex-col">
+            <h3>
+              Streak: {streak} {streak === 1 ? "day" : "days"}
+            </h3>
+            {props.type === 'NUMBER' ? (<h3>
+              Average: {avg} {avg === 1 ? props.metric.slice(0, -1) : props.metric}
+            </h3>) : null}
+          </div>
           <h3 className="cursor-pointer" onClick={toggleModal}>
             Settings
           </h3>
         </div>
       </div>
       {settingsModal ? (
-        <SettingsModal changeColorHandler = {changeColorHandler} toggleModal={toggleModal}/>
+        <SettingsModal
+          changeColorHandler={changeColorHandler}
+          toggleModal={toggleModal}
+        />
       ) : null}
     </>
   );
