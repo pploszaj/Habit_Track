@@ -13,6 +13,7 @@ type SquareProps = {
   type: HabitType;
   updateValue: (id: number, updatedValue: number) => void;
   maxVal: number;
+  updatedColor: string;
 };
 
 //darkest green: #0D4429
@@ -88,7 +89,7 @@ function Square(props: SquareProps) {
               props.date.toDateString() === new Date().toDateString()
                 ? "#39D353 2px solid"
                 : "",
-            backgroundColor: props.type === "NUMBER" ? color : props.completed ? "#39D353" : "#161B22",
+            backgroundColor: props.type === "NUMBER" ? color : props.completed ? props.updatedColor : "#161B22",
             cursor: props.date <= new Date() ? "pointer" : "default",
           }}
           onClick={props.type === "CHECKBOX" ? clickHandler : modalHandler}
