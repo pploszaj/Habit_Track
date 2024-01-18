@@ -22,10 +22,11 @@ type SquareProps = {
 //lightest green: #39D353
 
 function Square(props: SquareProps) {
-  console.log('square')
   const [modal, setmodal] = useState<boolean>(false);
   const [color, setcolor] = useState<string>('#161B22')
-
+  
+  console.log(props.updatedColor);
+  console.log('color:', color);
   const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} arrow placement="top" classes={{ popper: className }} />
   ))(({ theme }) => ({
@@ -57,20 +58,78 @@ function Square(props: SquareProps) {
   useEffect(() => {
     let max = props.maxVal;
     let val = props.val;
+    let updatedColor = props.updatedColor;
+
     if(val > 0) {
       let w = max / 4;
-      if(val >= max - w){
-        setcolor('#39D353');
-      } else if (val >= max - (w * 2)){ 
-        setcolor('#26A641');
-      } else if (val >= max - (w * 3)){
-        setcolor('#006D32');
-      } else if (val >= max - (w * 4)){
-        setcolor('#0D4429');
+      switch(updatedColor){
+        case '#39D353':
+          if(val >= max - w){
+            setcolor('#39D353');
+          } else if (val >= max - (w * 2)){ 
+            setcolor('#26A641');
+          } else if (val >= max - (w * 3)){
+            setcolor('#006D32');
+          } else if (val >= max - (w * 4)){
+            setcolor('#0D4429');
+          } else {
+            setcolor('#161B22');
+          }
+          break;
+        case '#D33953':
+          if(val >= max - w){
+            setcolor('#D33953');
+          } else if (val >= max - (w * 2)){ 
+            setcolor('#FF4F40');
+          } else if (val >= max - (w * 3)){
+            setcolor('#FF3C2E');
+          } else if (val >= max - (w * 4)){
+            setcolor('#FF291C');
+          } else {
+            setcolor('#161B22');
+          }
+          break;
+          case '#D37339':
+            if(val >= max - w){
+              setcolor('#D37339');
+            } else if (val >= max - (w * 2)){ 
+              setcolor('#FFA371');
+            } else if (val >= max - (w * 3)){
+              setcolor('#FFD5A1');
+            } else if (val >= max - (w * 4)){
+              setcolor('#FFE8C2');
+            } else {
+              setcolor('#161B22');
+            }
+            break;
+            case '#3933D3':
+              if(val >= max - w){
+                setcolor('#3933D3');
+              } else if (val >= max - (w * 2)){ 
+                setcolor('#7185D3');
+              } else if (val >= max - (w * 3)){
+                setcolor('#9FAED3');
+              } else if (val >= max - (w * 4)){
+                setcolor('#C7CDE3');
+              } else {
+                setcolor('#161B22');
+              }
+              break;
+            case '#7339D3':
+              if(val >= max - w){
+                setcolor('#7339D3');
+              } else if (val >= max - (w * 2)){ 
+                setcolor('#9D66D3');
+              } else if (val >= max - (w * 3)){
+                setcolor('#B997D3');
+              } else if (val >= max - (w * 4)){
+                setcolor('#D0C4E3');
+              } else {
+                setcolor('#161B22');
+              }
+              break;
+          }
       }
-    } else {
-      setcolor('#161B22');
-    }
   }, [props.val, props.maxVal])
 
   return (

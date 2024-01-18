@@ -107,7 +107,7 @@ function Heatmap(props: Habit) {
   };
 
   const toggleModal = () => {
-    setsettingsModal(true);
+    setsettingsModal(!settingsModal);
   };
 
   const changeColorHandler = (color: string) => {
@@ -165,7 +165,7 @@ function Heatmap(props: Habit) {
         </div>
       </div>
       {settingsModal ? (
-        <SettingsModal changeColorHandler = {changeColorHandler}/>
+        <SettingsModal changeColorHandler = {changeColorHandler} toggleModal={toggleModal}/>
       ) : null}
     </>
   );
