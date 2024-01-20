@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { SquareObject } from "../types";
 import Square from "./Square";
 import SettingsModal from "./SettingsModal";
-import { Habit } from "../types";
+import { Habit, HabitType } from "../types";
 import { IoMdSettings } from "react-icons/io";
 
 const months = [
@@ -20,15 +20,20 @@ const months = [
   "Dec",
 ];
 
-function Heatmap(props: Habit) {
+type HeatMapProps = {
+    name: string;
+    type: HabitType;
+    metric: string;
+    changeHabitName: (currentHabitName: string, newHabitName: string) => void;
+}
+
+function Heatmap(props: HeatMapProps) {
   const [heatmap, setheatmap] = useState<SquareObject[]>([]);
   const [streak, setstreak] = useState<number>(0);
   const [maxVal, setmaxVal] = useState<number>(0);
   const [color, setcolor] = useState<string>("#39D353");
   const [settingsModal, setsettingsModal] = useState<boolean>(false);
   const [avg, setavg] = useState<number>(0);
-
-  console.log('avg', avg)
 
   //gets the array of squares (amount of squares)
   //to see only as many squares up to the current day change endDate to the value of today
@@ -77,7 +82,6 @@ function Heatmap(props: Habit) {
     const foundIndex = heatmap.findIndex((square) => square.id === id);
 
     if (foundIndex !== -1) {
-      console.log("new number: ", updatedValue);
       const updatedHeatmap = [...heatmap];
       updatedHeatmap[foundIndex] = {
         ...updatedHeatmap[foundIndex],
@@ -185,6 +189,8 @@ function Heatmap(props: Habit) {
         <SettingsModal
           changeColorHandler={changeColorHandler}
           toggleModal={toggleModal}
+          changeHabitName={props.changeHabitName}
+          currentHabitName={props.name}
         />
       ) : null}
     </>

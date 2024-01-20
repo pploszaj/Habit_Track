@@ -20,8 +20,6 @@ function Square(props: SquareProps) {
   const [modal, setmodal] = useState<boolean>(false);
   const [color, setcolor] = useState<string>("#161B22");
 
-  console.log(props.updatedColor);
-  console.log("color:", color);
   const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} arrow placement="top" classes={{ popper: className }} />
   ))(({ theme }) => ({
