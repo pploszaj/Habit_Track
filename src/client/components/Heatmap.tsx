@@ -3,6 +3,7 @@ import { SquareObject } from "../types";
 import Square from "./Square";
 import SettingsModal from "./SettingsModal";
 import { Habit } from "../types";
+import { IoMdSettings } from "react-icons/io";
 
 const months = [
   "Jan",
@@ -177,9 +178,7 @@ function Heatmap(props: Habit) {
               Average: {avg} {avg === 1 ? props.metric.slice(0, -1) : props.metric}
             </h3>) : null}
           </div>
-          <h3 className="cursor-pointer" onClick={toggleModal}>
-            Settings
-          </h3>
+          <IoMdSettings className="cursor-pointer" onClick={toggleModal} size="20px"/>
         </div>
       </div>
       {settingsModal ? (
