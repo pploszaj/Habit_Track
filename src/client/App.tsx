@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Heatmap from "./components/Heatmap";
 import NewHabit from "./components/NewHabit";
 import "./styles.css";
-import { Habit } from '../client/types'
+import { Habit } from '../client/types';
+import axios from "axios";
 
 function App() {
   const [habits, sethabits] = useState<Habit[]>([]);
+  const [response, setresponse] = useState('');
 
   const addNewHabit = (newHabit: Habit) => {
     sethabits([...habits, newHabit]);
@@ -25,9 +27,23 @@ function App() {
     }
   }
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get('/hi');
+        console.log(res.data);
+        setresponse(res.data);
+      } catch(error) {
+        console.error('error fetching data', error)
+      }
+    }
+    fetchData();
+  },[])
+
   return (
     <div>
       <NewHabit addNewHabit={addNewHabit} />
+      {response ? <div className="text-white text-[100px]">WOAH IT WORKS</div> : null} 
       <div className="flex justify-center w-screen h-screen">
         <div className="h-screen w-[70vw] flex flex-col justify-start items-start gap-10 mt-10">
           {habits.map((habit: Habit, index: number) => (
