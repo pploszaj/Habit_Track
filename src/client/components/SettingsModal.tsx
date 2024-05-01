@@ -5,6 +5,8 @@ type SettingsModalProps = {
   toggleModal: () => void;
   changeHabitName: (currentHabitName: string, newHabitName: string) => void;
   currentHabitName: string;
+  currentColor: string;
+  changePrevColor: () => void;
 };
 
 function SettingsModal(props: SettingsModalProps) {
@@ -12,9 +14,19 @@ function SettingsModal(props: SettingsModalProps) {
   const [newHabitName, setnewHabitName] = useState('');
 
   const handleSave = () => {
-    props.changeHabitName(props.currentHabitName, newHabitName);
+    if(!(newHabitName === '')){
+      props.changeHabitName(props.currentHabitName, newHabitName);
+    }
+    props.changePrevColor();
     props.toggleModal();
   }
+
+  const closeModal = () => {
+    props.changeColorHandler(props.currentColor);
+    props.toggleModal();
+  }
+
+  
 
   return (
     <div className="relative">
@@ -43,7 +55,7 @@ function SettingsModal(props: SettingsModalProps) {
         ></button>
       </div>
       <button className="text-lightgray" onClick={handleSave}>Save</button>
-    <button className="absolute right-6 top-2 text-lightgray hover:text-gray-700 text-2xl" onClick={props.toggleModal}>x</button>
+    <button className="absolute right-6 top-2 text-lightgray hover:text-gray-700 text-2xl" onClick={closeModal}>x</button>
     </div>
     </div>
   );

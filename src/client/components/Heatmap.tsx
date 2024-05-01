@@ -32,6 +32,7 @@ function Heatmap(props: HeatMapProps) {
   const [streak, setstreak] = useState<number>(0);
   const [maxVal, setmaxVal] = useState<number>(0);
   const [color, setcolor] = useState<string>("#39D353");
+  const [prevColor, setprevColor] = useState<string>("#39D353");
   const [settingsModal, setsettingsModal] = useState<boolean>(false);
   const [avg, setavg] = useState<number>(0);
 
@@ -131,6 +132,10 @@ function Heatmap(props: HeatMapProps) {
     setcolor(color);
   };
 
+  const changePrevColor = () => {
+    setprevColor(color);
+  }
+
   useEffect(() => {
     const [s, v, a] = calculateStreakAndMaxVal();
     setstreak(s);
@@ -191,6 +196,8 @@ function Heatmap(props: HeatMapProps) {
           toggleModal={toggleModal}
           changeHabitName={props.changeHabitName}
           currentHabitName={props.name}
+          currentColor={prevColor}
+          changePrevColor={changePrevColor}
         />
       ) : null}
     </>
