@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Heatmap from "./components/Heatmap";
 import NewHabit from "./components/NewHabit";
+import Login from "./components/Login";
 import "./styles.css";
 import { Habit } from "../client/types";
 import axios from "axios";
@@ -8,6 +9,7 @@ import axios from "axios";
 function App() {
   const [habits, sethabits] = useState<Habit[]>([]);
   const [response, setresponse] = useState("");
+  const [isLoggedIn, setisLoggedIn] = useState<boolean>(false);
 
   const addNewHabit = (newHabit: Habit) => {
     sethabits([...habits, newHabit]);
@@ -27,6 +29,10 @@ function App() {
     }
   };
 
+  const toggleIsLoggedIn = () => {
+    setisLoggedIn(!isLoggedIn);
+  }
+
   useEffect(() => {
     //get habits from db
     //save after a change is made
@@ -41,10 +47,9 @@ function App() {
     fetchData();
   }, []);
 
-  return (
+  return isLoggedIn ? (
     <div>
       <NewHabit addNewHabit={addNewHabit} />
-      {/* {response ? <div className="text-white text-[100px]">{response}</div> : null}  */}
       <div className="flex justify-center w-screen h-screen">
         <div className="h-screen w-[70vw] flex flex-col justify-start items-start gap-10 mt-10">
           {habits.map((habit: Habit, index: number) => (
@@ -66,6 +71,8 @@ function App() {
         </div>
       </div>
     </div>
+  ) : (
+    <Login toggleIsLoggedIn = {toggleIsLoggedIn}/>
   );
 }
 

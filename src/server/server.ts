@@ -19,8 +19,23 @@ app.get('/load', (req: Request, res: Response) => {
   res.json('Hello, World!');
 });
 
-app.get('/save', (req: Request, res: Response) => {
+app.post('/signup', (req:Request, res:Response) => {
+  const createUser = async (userData: {username: string, password: string}) => {
+    try {
+      const newUser = new User(userData);
+      await newUser.save();
+      console.log('User created successfully:', newUser);
+      res.status(200).send('Success');
+    } catch(error) {
+      console.error('Error creating user:', error);
+      res.status(400).send('Unsuccessful');
+    }
+  }
 
+  createUser(req.body)
+})
+
+app.get('/save', (req: Request, res: Response) => {
 })
 
 app.listen(port, () => {
