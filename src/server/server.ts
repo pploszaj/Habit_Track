@@ -19,6 +19,27 @@ app.get('/load', (req: Request, res: Response) => {
   res.json('Hello, World!');
 });
 
+app.post('/login', (req:Request, res:Response) => {
+  const verifyUser = async (userData: {username: string, password: string}) => {
+    try {
+      const { username, password } = userData;
+      const user = await User.findOne({ username: username });
+      if (!user) {
+        return res.status(404).send('User not found');
+      }
+      if (user.password === password) {
+        res.status(200).send('Login successful');
+      } else {
+        res.status(401).send('Invalid credentials');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      res.status(500).send('Internal server error');
+    }
+  };
+  verifyUser(req.body);
+})
+
 app.post('/signup', (req:Request, res:Response) => {
   const createUser = async (userData: {username: string, password: string}) => {
     try {
