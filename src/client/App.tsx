@@ -8,7 +8,7 @@ import axios from "axios";
 
 function App() {
   const [habits, sethabits] = useState<Habit[]>([]);
-  const [response, setresponse] = useState("");
+  const [token, setToken] = useState<string | null>(null);
   const [isLoggedIn, setisLoggedIn] = useState<boolean>(false);
 
   const addNewHabit = (newHabit: Habit) => {
@@ -29,27 +29,54 @@ function App() {
     }
   };
 
-  const toggleIsLoggedIn = () => {
-    setisLoggedIn(!isLoggedIn);
+  const toggleIsLoggedIn = (newToken: string | null = null) => {
+    // setisLoggedIn(!isLoggedIn);
+    if (newToken) {
+      setToken(newToken);
+      setisLoggedIn(true);
+      localStorage.setItem("accessToken", newToken);
+    } else {
+      setToken(null);
+      setisLoggedIn(false);
+      localStorage.removeItem("accessToken");
+    }
+  }
+
+  const logoutHandler = () => {
+    toggleIsLoggedIn(null);
   }
 
   useEffect(() => {
     //get habits from db
     //save after a change is made
-    const fetchData = async () => {
+    const storedToken = localStorage.getItem('accessToken');
+    if (storedToken){
+      setToken(storedToken);
+      setisLoggedIn(true);
+    }
+
+    const fetchHabits = async () => {
+      if(!storedToken) return;
+
       try {
-        const res = await axios.get("/load");
-        setresponse(res.data);
+        const res = await axios.get("/habits", {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+          }
+        });
+        sethabits(res.data.habits);
       } catch (error) {
         console.error("error fetching data", error);
       }
     };
-    fetchData();
-  }, []);
+
+    fetchHabits();
+  }, [token]);
 
   return isLoggedIn ? (
     <div>
-      <NewHabit addNewHabit={addNewHabit} />
+      <button onClick={logoutHandler} className="text-2xl text-white">Logout</button>
+      <NewHabit addNewHabit={addNewHabit} token={token} />
       <div className="flex justify-center w-screen h-screen">
         <div className="h-screen w-[70vw] flex flex-col justify-start items-start gap-10 mt-10">
           {habits.map((habit: Habit, index: number) => (
