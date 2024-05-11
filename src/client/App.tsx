@@ -5,14 +5,25 @@ import Login from "./components/Login";
 import "./styles.css";
 import { Habit } from "../client/types";
 import axios from "axios";
+import Loader from './components/Loader';
 
 function App() {
   const [habits, sethabits] = useState<Habit[]>([]);
   const [token, setToken] = useState<string | null>(null);
   const [isLoggedIn, setisLoggedIn] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const addNewHabit = (newHabit: Habit) => {
-    sethabits([...habits, newHabit]);
+    setLoading(true);
+    try {
+      setTimeout(() => {
+        sethabits([...habits, newHabit]);
+        setLoading(false);
+      }, 1500); // Simulate delay
+    } catch (error) {
+      console.error("Failed to create habit", error);
+      setLoading(false);
+    }
   };
 
   const changeHabitName = (currentName: string, newHabitName: string) => {
@@ -75,6 +86,7 @@ function App() {
 
   return isLoggedIn ? (
     <div>
+      {loading && <Loader />}
       <button onClick={logoutHandler} className="text-2xl text-white">Logout</button>
       <NewHabit addNewHabit={addNewHabit} token={token} />
       <div className="flex justify-center w-screen h-screen">
