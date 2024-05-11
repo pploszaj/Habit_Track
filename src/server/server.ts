@@ -79,6 +79,41 @@ app.post("/habits", authController.verifyJWT, async (req: Request, res: Response
   }
 })
 
+app.post('/update/:name', authController.verifyJWT, async (req:Request, res: Response) => {
+  console.log('hellooooo')
+  const userId = res.locals.user.id; // Extracted from JWT payload
+  const habitName = req.params.name;
+  const { id, completed, val } = req.body;
+
+  try {
+    // Find the habit by name and userId
+    const habit = await Habit.findOne({ userId, name: habitName });
+
+    if (!habit) {
+      return res.status(404).json({ message: 'Habit not found' });
+    }
+
+    // Find the specific square by its id
+    const square = habit.squares.find((s: { id: any; }) => s.id === id);
+    if (!square) {
+      console.log('still here')
+      return res.status(404).json({ message: 'Square not found' });
+    }
+
+    // Update the square's fields
+    square.completed = completed;
+    square.val = val;
+
+    // Save the updated habit document
+    await habit.save();
+
+    res.status(200).json({ message: 'Square updated successfully' });
+  } catch (error) {
+    console.error('Error updating square:', error);
+    res.status(500).json({ message: 'Server error while updating square' });
+  }
+})
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

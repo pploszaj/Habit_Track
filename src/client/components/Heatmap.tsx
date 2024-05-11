@@ -4,6 +4,7 @@ import Square from "./Square";
 import SettingsModal from "./SettingsModal";
 import { Habit, HabitType } from "../types";
 import { IoMdSettings } from "react-icons/io";
+import axios from "axios";
 
 const months = [
   "Jan",
@@ -24,6 +25,7 @@ type HeatMapProps = {
     name: string;
     type: HabitType;
     metric: string;
+    token: string | null;
     changeHabitName: (currentHabitName: string, newHabitName: string) => void;
 }
 
@@ -66,30 +68,67 @@ function Heatmap(props: HeatMapProps) {
     generateSquaresArray();
   }, []);
 
-  const toggleCompleteHandler = (id: number) => {
+  const toggleCompleteHandler = async (id: number) => {
     const foundIndex = heatmap.findIndex((square) => square.id === id);
 
     if (foundIndex !== -1) {
       const updatedHeatmap = [...heatmap];
-      updatedHeatmap[foundIndex] = {
-        ...updatedHeatmap[foundIndex],
-        completed: !updatedHeatmap[foundIndex].completed,
-      };
+      // updatedHeatmap[foundIndex] = {
+      //   ...updatedHeatmap[foundIndex],
+      //   completed: !updatedHeatmap[foundIndex].completed,
+      // };
+      const currentSquare = updatedHeatmap[foundIndex];
+      currentSquare.completed = !currentSquare.completed;
       setheatmap(updatedHeatmap);
+
+      try {
+        // Replace `/habits/update` with your actual API endpoint
+        await axios.post(`/update/${encodeURIComponent(props.name)}`, {
+          id,
+          completed: currentSquare.completed,
+          val: currentSquare.val,
+        }, {
+          headers: {
+            Authorization: `Bearer ${props.token}`
+          }
+        });
+      } catch (error) {
+        console.error('Error updating habit data:', error);
+      }
     }
   };
 
-  const updateValue = (id: number, updatedValue: number) => {
+  const updateValue = async (id: number, updatedValue: number) => {
     const foundIndex = heatmap.findIndex((square) => square.id === id);
 
     if (foundIndex !== -1) {
       const updatedHeatmap = [...heatmap];
-      updatedHeatmap[foundIndex] = {
-        ...updatedHeatmap[foundIndex],
-        val: updatedValue,
-        completed: updatedValue === 0 ? false : true,
-      };
+      // updatedHeatmap[foundIndex] = {
+      //   ...updatedHeatmap[foundIndex],
+      //   val: updatedValue,
+      //   completed: updatedValue === 0 ? false : true,
+      // };
+      const currentSquare = updatedHeatmap[foundIndex];
+      currentSquare.val = updatedValue;
+      currentSquare.completed = updatedValue !== 0;
+  
+      // Update state
       setheatmap(updatedHeatmap);
+
+      try {
+        // Replace `/habits/update` with your actual API endpoint
+        await axios.post(`/update/${encodeURIComponent(props.name)}`, {
+          id,
+          completed: currentSquare.completed,
+          val: currentSquare.val,
+        }, {
+          headers: {
+            Authorization: `Bearer ${props.token}`
+          }
+        });
+      } catch (error) {
+        console.error('Error updating habit data:', error);
+      }
     }
   };
 

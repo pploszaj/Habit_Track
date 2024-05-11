@@ -85,6 +85,7 @@ function App() {
               type={habit.type}
               metric={habit.metric}
               key={index}
+              token={token}
               changeHabitName={changeHabitName}
             />
           ))}
