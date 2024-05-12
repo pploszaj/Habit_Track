@@ -12,7 +12,7 @@
     "build:client": "webpack --config webpack.config.js"
   },
   "keywords": [],
-  "author": "Patryk Ploszaj <patryk.ploszaj07@gmail.com>",
+  "author": "Patryk Ploszaj <patryk.ploszaj07@gmail.com>, Kevin Arriaga <kearria02@gmail.com>",
   "license": "MIT",
   "description": "",
   "devDependencies": {

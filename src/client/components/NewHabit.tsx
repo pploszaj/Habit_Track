@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { HabitType, Habit } from "../types";
+import { toast } from 'react-toastify';
 
 type NewHabitProps = {
   addNewHabit: (newHabit: Habit) => void;
@@ -27,11 +28,13 @@ function NewHabit(props: NewHabitProps) {
         });
 
         // Add the new habit locally after a successful response
+        toast.success('Habit created successfully!');
         props.addNewHabit(res.data.habit);
         sethabitName("");
         setmetric("");
       } catch (error) {
         console.error("Error adding habit:", error);
+        toast.error('Failed to create habit. Please try again.');
       }
     }
     props.addNewHabit({ name: habitName, type: habitType, metric });

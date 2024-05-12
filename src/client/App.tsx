@@ -6,6 +6,9 @@ import "./styles.css";
 import { Habit } from "../client/types";
 import axios from "axios";
 import Loader from './components/Loader';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function App() {
   const [habits, sethabits] = useState<Habit[]>([]);
@@ -86,6 +89,7 @@ function App() {
 
   return isLoggedIn ? (
     <div>
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar />
       {loading && <Loader />}
       <button onClick={logoutHandler} className="text-2xl text-white">Logout</button>
       <NewHabit addNewHabit={addNewHabit} token={token} />
