@@ -8,6 +8,7 @@ import axios from "axios";
 import Loader from './components/Loader';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AutoTypingText from "./components/AutoTypingText";
 
 
 function App() {
@@ -108,7 +109,10 @@ function App() {
           {habits.length === 0 ? (
             <div className="flex h-4/6 w-full justify-center items-center">
               <h1 className="text-[#9CA3AF] text-2xl">
-                Start Crafting Your New Habits Today.
+                <AutoTypingText
+                    text="Start Crafting Your New Habits Today."
+                    speed={75}
+              />
               </h1>
             </div>
           ) : null}
