@@ -184,6 +184,7 @@ function Login(props: LoginProps) {
             <div style={styles.right}>
               <div style={styles.rightText}>
                 <h2>Welcome to Habit Track!</h2>
+                  <h3>By Kevin Arriaga and Patryk Plozaj</h3>
 
 
               </div>
