@@ -45,26 +45,4 @@ UserController.findUser = async (
   }
 };
 
-UserController.createJWT = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-
-  const user = res.locals.user;
-  const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
-  if (!accessTokenSecret) {
-    return res
-      .status(500)
-      .json({
-        error:
-          "ACCESS_TOKEN_SECRET is not defined in the environment variables.",
-      });
-  }
-  const payload = {id: user._id, username: user.username};
-  const accessToken = jwt.sign(payload, accessTokenSecret as string);
-  res.locals.accessToken = accessToken;
-  next();
-};
-
 export default UserController;

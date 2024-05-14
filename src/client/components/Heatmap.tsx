@@ -73,16 +73,11 @@ function Heatmap(props: HeatMapProps) {
 
     if (foundIndex !== -1) {
       const updatedHeatmap = [...heatmap];
-      // updatedHeatmap[foundIndex] = {
-      //   ...updatedHeatmap[foundIndex],
-      //   completed: !updatedHeatmap[foundIndex].completed,
-      // };
       const currentSquare = updatedHeatmap[foundIndex];
       currentSquare.completed = !currentSquare.completed;
       setheatmap(updatedHeatmap);
 
       try {
-        // Replace `/habits/update` with your actual API endpoint
         await axios.post(`/update/${encodeURIComponent(props.name)}`, {
           id,
           completed: currentSquare.completed,
@@ -103,20 +98,13 @@ function Heatmap(props: HeatMapProps) {
 
     if (foundIndex !== -1) {
       const updatedHeatmap = [...heatmap];
-      // updatedHeatmap[foundIndex] = {
-      //   ...updatedHeatmap[foundIndex],
-      //   val: updatedValue,
-      //   completed: updatedValue === 0 ? false : true,
-      // };
       const currentSquare = updatedHeatmap[foundIndex];
       currentSquare.val = updatedValue;
       currentSquare.completed = updatedValue !== 0;
   
-      // Update state
       setheatmap(updatedHeatmap);
 
       try {
-        // Replace `/habits/update` with your actual API endpoint
         await axios.post(`/update/${encodeURIComponent(props.name)}`, {
           id,
           completed: currentSquare.completed,

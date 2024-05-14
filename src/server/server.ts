@@ -5,8 +5,6 @@ import authController from "./controllers/authController";
 
 require("dotenv").config();
 
-// const User = require("./models/User");
-import User from "./models/User";
 const Habit = require("./models/Habit");
 
 const app = express();
@@ -18,10 +16,6 @@ mongoose
   .connect(process.env.DB_URI as string)
   .then(() => console.log("MongoDB connection successful"))
   .catch((err) => console.error("MongoDB connection error:", err));
-
-app.get("/load", (req: Request, res: Response) => {
-  res.json("Hello, World!");
-});
 
 app.post(
   "/login",

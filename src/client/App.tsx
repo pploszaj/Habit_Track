@@ -5,11 +5,10 @@ import Login from "./components/Login";
 import "./styles.css";
 import { Habit } from "../client/types";
 import axios from "axios";
-import Loader from './components/Loader';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Loader from "./components/Loader";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import AutoTypingText from "./components/AutoTypingText";
-
 
 function App() {
   const [habits, sethabits] = useState<Habit[]>([]);
@@ -55,29 +54,29 @@ function App() {
       setisLoggedIn(false);
       localStorage.removeItem("accessToken");
     }
-  }
+  };
 
   const logoutHandler = () => {
     toggleIsLoggedIn(null);
-  }
+  };
 
   useEffect(() => {
     //get habits from db
     //save after a change is made
-    const storedToken = localStorage.getItem('accessToken');
-    if (storedToken){
+    const storedToken = localStorage.getItem("accessToken");
+    if (storedToken) {
       setToken(storedToken);
       setisLoggedIn(true);
     }
 
     const fetchHabits = async () => {
-      if(!storedToken) return;
+      if (!storedToken) return;
 
       try {
         const res = await axios.get("/habits", {
           headers: {
             Authorization: `Bearer ${storedToken}`,
-          }
+          },
         });
         sethabits(res.data.habits);
       } catch (error) {
@@ -89,38 +88,43 @@ function App() {
   }, [token]);
 
   return isLoggedIn ? (
-    <div>
-      <ToastContainer position="top-right" autoClose={5000} hideProgressBar />
-      {loading && <Loader />}
-      <button onClick={logoutHandler} className="text-2xl text-white">Logout</button>
-      <NewHabit addNewHabit={addNewHabit} token={token} />
-      <div className="flex justify-center w-screen h-screen">
-        <div className="h-screen w-[70vw] flex flex-col justify-start items-start gap-10 mt-10">
-          {habits.map((habit: Habit, index: number) => (
-            <Heatmap
-              name={habit.name}
-              type={habit.type}
-              metric={habit.metric}
-              key={index}
-              token={token}
-              changeHabitName={changeHabitName}
-            />
-          ))}
-          {habits.length === 0 ? (
-            <div className="flex h-4/6 w-full justify-center items-center">
-              <h1 className="text-[#9CA3AF] text-2xl">
-                <AutoTypingText
+    <>
+      <div>
+        <ToastContainer position="top-right" autoClose={5000} hideProgressBar />
+        {loading && <Loader />}
+        <button onClick={logoutHandler} className="text-2xl text-white">
+          Logout
+        </button>
+        <NewHabit addNewHabit={addNewHabit} token={token} />
+        <div className="flex justify-center w-screen h-screen">
+          <div className="h-screen w-[70vw] flex flex-col justify-start items-start gap-10 mt-10">
+            {habits.map((habit: Habit, index: number) => (
+              <Heatmap
+                name={habit.name}
+                type={habit.type}
+                metric={habit.metric}
+                key={index}
+                token={token}
+                changeHabitName={changeHabitName}
+              />
+            ))}
+            {habits.length === 0 ? (
+              <div className="flex h-4/6 w-full justify-center items-center">
+                <h1 className="text-[#9CA3AF] text-2xl">
+                  <AutoTypingText
                     text="Start Crafting Your New Habits Today."
                     speed={75}
-              />
-              </h1>
-            </div>
-          ) : null}
+                  />
+                </h1>
+              </div>
+            ) : null}
+          </div>
         </div>
       </div>
-    </div>
+      <footer className="text-[#9CA3AF] text-2xl text-center">Project by Patryk Ploszaj + Kevin Arriaga</footer>
+    </>
   ) : (
-    <Login toggleIsLoggedIn = {toggleIsLoggedIn}/>
+    <Login toggleIsLoggedIn={toggleIsLoggedIn} />
   );
 }
 
